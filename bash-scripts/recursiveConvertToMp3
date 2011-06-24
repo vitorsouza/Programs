@@ -1,0 +1,38 @@
+#!/bin/sh
+
+processDir() {
+	dir=$1
+	echo "Entering $dir"
+	
+	for f in "$dir"/*; do
+		# Checks if it's a directory.
+		if [ -d "$f" ]; then
+			processDir "$f"
+			
+		# Otherwise it's a file.
+		else
+			processFile "$f"
+		fi
+	done
+}
+
+processFile() {
+	file=$1
+	ext=".${file##*.}"
+	dir=`dirname "$file"`
+	base=`basename "${file}" ${ext}`
+	
+	echo "Converting \"${file}...\""
+	mplayer -vo null -vc dummy -af resample=44100 -ao pcm:waveheader "${file}"
+	rm -f "${file}"
+	lame -m j -h --vbr-new -b 128 audiodump.wav -o "${dir}/${base}.mp3"; 
+	rm -f audiodump.wav
+}
+
+dir=$1
+
+if [ "$dir" = "" ]; then
+	echo "Usage: $0 <starting directory>"
+else
+	processDir $dir
+fi

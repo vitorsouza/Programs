@@ -1,0 +1,12 @@
+#! /bin/sh
+
+if [ "$1" != "" ]; then 
+	echo "Converting subtitle '$1'..."
+
+	iconv -f UTF-8 -t ISO8859-1 < "$1" > "$1.utf8"
+	rm "$1"
+	mv "$1.utf8" "$1"
+fi;
+
+
+

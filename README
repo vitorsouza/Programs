@@ -1,0 +1,10 @@
+This is a collection of programs that I have created to automate many different kinds of tasks.
+
+It's an Eclipse project because many of these programs are written in Java. I know there are probably many other better languages to write these programs, but I'm more comfortable with Java so there you go. Also, these are programs, scripts, not object-oriented software, so don't take them as examples on how to program in Java or any OO language.
+
+The bash-script folder contains some useful bash scripts that I have created to automate some stuff in Linux. They are not documented so you have to analyze the code to see what they do. If you have any questions, ask me. 
+
+If you have any suggestions on improving these, feel free to contribute.
+
+Vítor E. Silva Souza
+

@@ -1,0 +1,45 @@
+#!/bin/sh
+
+processDir() {
+	dir=$1
+	echo "Entering $dir"
+	
+	echo ""
+	echo "Renaming all files and subdirectories..."
+	for f in "$dir"/*; do
+	  process "$f"
+	done
+	
+	echo ""
+	echo "Navigating to subdirectories..."
+	for f in "$dir"/*; do
+		# Checks if it's a directory.
+		if [ -d "$f" ]; then
+			processDir "$f"
+		fi
+	done
+}
+
+process() {
+	file=$1
+	dir=`dirname "$file"`
+	file=`basename "$file"`
+	
+	echo $file > /tmp/rcnutf8-old-file
+	iconv -f ISO8859-1 -t UTF-8 < /tmp/rcnutf8-old-file > /tmp/rcnutf8-new-file
+	file=`cat /tmp/rcnutf8-old-file`
+	newfile=`cat /tmp/rcnutf8-new-file`
+	
+	if [ "$file" != "$newfile" ]; then
+	  echo "Renaming \"${file}\" to \"${newfile}\"..."
+	  mv "$dir/$file" "$dir/$newfile"
+	fi
+}
+
+dir=$1
+
+if [ "$dir" = "" ]; then
+	echo "Usage: $0 <starting directory>"
+else
+	processDir $dir
+fi
