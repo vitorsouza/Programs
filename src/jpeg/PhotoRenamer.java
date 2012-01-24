@@ -28,7 +28,7 @@ import com.drew.metadata.exif.ExifDirectory;
  * @version 1.0
  */
 public class PhotoRenamer {
-	private static final String ROOT_FOLDER_PATH = "/home/vitor/Pictures/2011/04/22";
+	private static final String ROOT_FOLDER_PATH = "/home/vitor/Pictures/2012/01/06";
 
 	private static final String FINAL_EXTENSION = "jpg";
 

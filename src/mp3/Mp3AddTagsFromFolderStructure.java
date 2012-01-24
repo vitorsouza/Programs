@@ -13,7 +13,7 @@ import org.cmc.music.myid3.MyID3;
  * structure: Artist/Album/Song.mp3 and, for each MP3 file found, creates a new ID3 metadata reading the names of the directories
  * and moves the songs to a destination directory (constant DST_FOLDER) using the same folder structure.
  * 
- * DEPENDS ON: myid3.jar 
+ * DEPENDS ON: myid3.jar, jakarta-regexp-1.5.jar
  * 
  * I created this program because I like to organize my MP3 albums. First I tag them with this program, then I listen to the
  * album. Then I use MusicBrainz Picard for the definitive tagging of the MP3s if I decide to keep them. Tagging them with this

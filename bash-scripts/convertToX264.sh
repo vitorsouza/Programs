@@ -40,7 +40,7 @@ processDir() {
 
 		# Converts the source file to X.264 MP4.
 		ffmpeg -i "$vidFile" -an -pass 1 -vcodec libx264 -vpre slow_firstpass -b $BIT_RATE -bt $BIT_RATE -threads 0 "$outFile"
-		ffmpeg -y -i "$vidFile" -acodec libfaac -ab 128k -pass 2 -vcodec libx264 -vpre slow -b $BIT_RATE -bt $BIT_RATE -threads 0 "$outFile"
+		ffmpeg -y -i "$vidFile" -acodec libfaac -ab 128kb -ar 44100 -ac 1 -pass 2 -vcodec libx264 -vpre slow -b $BIT_RATE -bt $BIT_RATE -threads 0 "$outFile"
 
 		# Deletes the temporary files.
 		rm -f ffmpeg2pass*.log x264_2pass.*
