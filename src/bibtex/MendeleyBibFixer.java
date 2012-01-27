@@ -1,7 +1,9 @@
 package bibtex;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.PrintWriter;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -14,22 +16,40 @@ import java.util.Scanner;
  */
 public class MendeleyBibFixer {
 	/** Path to input file. */
-	private static final String BIB_FILE_INPUT_PATH = "/home/vitor/Temp/mendeley.bib";
+	private static String BIB_FILE_INPUT_PATH = "mendeley.bib";
 
 	/** Path to output file. */
-	private static final String BIB_FILE_OUTPUT_PATH = "/home/vitor/Temp/mendeley-fix.bib";
+	private static String BIB_FILE_OUTPUT_PATH = "mendeley-fix.bib";
 
 	/** BibTeX keys we're not interested in. */
-	private static final String[] blacklist = new String[] { "abstract", "doi", "file", "issn", "keywords", "mendeley-tags", "month", "isbn", "address" };
+	private static String[] blacklist = new String[] { "annote", "abstract", "doi", "file", "issn", "keywords", "mendeley-tags", "month", "isbn", "address" };
+	
+	/** If ordinals should be put in overscript. */
+	private static boolean doOverscript = true;
+	
+	/** Part of the ordinals to put in overscript. */
+	private static final String[] overscript = new String[] { "st", "nd", "rd", "th" };
+	
+	/** Characters to un-escape. */
+	private static final String[] escaped = new String[] { "\\\\\\&", "\\\\_" };
+	
+	/** Un-escaped versions of above characters. */
+	private static final String[] nonEscaped = new String[] { "&", "_" };
 
 	/** BibTeX key for the publication title. */
 	private static final String titleKey = "title";
 
 	/** BibTeX key for the publication URL. */
 	private static final String urlKey = "url";
+	
+	/** BibTeX key that usually contains proceedings titles. */
+	private static final String proceedingsKey = "booktitle";
 
 	/** Main method. */
 	public static void main(String[] args) throws Exception {
+		// Checks for a configuration file and read the value of the constants from it.
+		configure();
+		
 		File inFile = new File(BIB_FILE_INPUT_PATH);
 		File outFile = new File(BIB_FILE_OUTPUT_PATH);
 
@@ -57,8 +77,11 @@ public class MendeleyBibFixer {
 
 			// Checks if it's the end of an item. Prints the item to the output.
 			else if (line.startsWith("}")) {
+				// Finishes the builder and prints.
 				builder.append('}').append('\n');
 				printToOutput(builder, titleLine, urlLine, out);
+				
+				// Resets the variables.
 				titleLine = null;
 				urlLine = null;
 				builder = new StringBuilder();
@@ -73,9 +96,13 @@ public class MendeleyBibFixer {
 				int idx = line.indexOf('{');
 				if (idx != -1) {
 					int idxB = line.indexOf('}');
-					urlLine = "% Source: " + line.substring(idx + 1, idxB);
+					urlLine = "% Source: " + replaceEscaped(line.substring(idx + 1, idxB));
 				}
 			}
+			
+			// Checks if it's the line that contains the proceedings name, so it can put the ordinals in overscript.
+			else if (line.startsWith(proceedingsKey))
+				builder.append(' ').append(replaceOrdinals(line)).append('\n');
 
 			// Otherwise, check if the line is blacklisted and include in the output if it's not.
 			else if (!isBlacklisted(line))
@@ -89,15 +116,48 @@ public class MendeleyBibFixer {
 		System.out.println("Done!");
 	}
 
+	/** If file bibfixer.properties is provided, change the value of the parameters with it. */
+	private static void configure() throws Exception {
+		File configFile = new File("bibfixer.properties");
+		if (configFile.exists()) {
+			Properties props = new Properties();
+			props.load(new FileReader(configFile));
+			
+			String sInputFile = props.getProperty("input-file").trim();
+			String sOutputFile = props.getProperty("output-file").trim();
+			String sBlacklist = props.getProperty("blacklist").trim();
+			String sDoOverscript = props.getProperty("do-overscript").trim();
+			
+			if ((sInputFile != null) && (! sInputFile.isEmpty())) BIB_FILE_INPUT_PATH = sInputFile;
+			if ((sOutputFile != null) && (! sOutputFile.isEmpty())) BIB_FILE_OUTPUT_PATH = sOutputFile;
+			
+			if ((sBlacklist != null) && (! sBlacklist.isEmpty())) {
+				blacklist = sBlacklist.split("\\s*,\\s*"); 
+			}
+			
+			if ((sDoOverscript != null) && (! sDoOverscript.isEmpty())) {
+				if ("true".equals(sDoOverscript)) doOverscript = true;
+				if ("false".equals(sDoOverscript)) doOverscript = false;
+			}
+		}
+	}
+
 	/** Prints the BibTeX item to the output, fixing the title position and placing the URL as comment. */
 	private static void printToOutput(StringBuilder builder, String titleLine, String urlLine, PrintWriter out) {
 		int idx = builder.indexOf("\n");
 		if (idx != -1) {
+			// Adds the title as the first attribute of the entry.
 			builder.insert(idx + 1, titleLine);
+
+			// Removes the trailing comma, if any.
+			int commaIdx = builder.length() - 4;
+			if ((commaIdx > 0) && (builder.charAt(commaIdx) == ','))
+				builder.deleteCharAt(commaIdx);
+			
+			// Prints the URL (if any) as comment and then prints the BibTeX entry.
 			if (urlLine != null)
 				out.println(urlLine);
 			out.println(builder.toString());
-			out.println();
 		}
 	}
 
@@ -108,5 +168,23 @@ public class MendeleyBibFixer {
 				return true;
 
 		return false;
+	}
+	
+	/** Replaces the ordinals with LaTeX code that puts the "st", "nd", "rd" or "th" in overscript. */
+	private static String replaceOrdinals(String line) {
+		if (doOverscript) {
+			for (int i = 1; i < 4; i++)
+				line = line.replaceAll(i + overscript[i - 1], i + "\\$^\\{" + overscript[i - 1] + "\\}\\$");
+			for (int i = 1; i < 10; i++)
+				line = line.replaceAll(i + overscript[3], i + "\\$^\\{" + overscript[3] + "\\}\\$");
+		}
+		return line;
+	}
+	
+	/** Replaces escaped characters with their original form. */
+	private static String replaceEscaped(String line) {
+		for (int i = 0; i < escaped.length; i++)
+			line = line.replaceAll(escaped[i], nonEscaped[i]);
+		return line;
 	}
 }
