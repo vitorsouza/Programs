@@ -11,6 +11,10 @@ import java.util.Scanner;
  * BibTeX entry, only the content that is interesting (according to a blacklist). Also, makes sure the title is the
  * first entry of the item and uses the URL as a comment above the BibTeX entry.
  * 
+ * Possible improvements:
+ * - Replace Something(TM) with Something$\texttrademark$
+ * - Replace \~{} with $\thicksim$
+ * 
  * @author Vitor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0
  */
@@ -27,14 +31,17 @@ public class MendeleyBibFixer {
 	/** If ordinals should be put in overscript. */
 	private static boolean doOverscript = true;
 	
+	/** Minimum amount of authors required to collapse the list from "X, Y, Z, ..." to "X et al."). */
+	private static int collapseAuthorsCount = 7;
+	
 	/** Part of the ordinals to put in overscript. */
 	private static final String[] overscript = new String[] { "st", "nd", "rd", "th" };
 	
 	/** Characters to un-escape. */
-	private static final String[] escaped = new String[] { "\\\\\\&", "\\\\_" };
+	private static final String[] escaped = new String[] { "\\\\\\&", "\\\\_", "\\\\%", "\\\\#" };
 	
 	/** Un-escaped versions of above characters. */
-	private static final String[] nonEscaped = new String[] { "&", "_" };
+	private static final String[] nonEscaped = new String[] { "&", "_", "%", "#" };
 
 	/** BibTeX key for the publication title. */
 	private static final String titleKey = "title";
@@ -42,8 +49,8 @@ public class MendeleyBibFixer {
 	/** BibTeX key for the publication URL. */
 	private static final String urlKey = "url";
 	
-	/** BibTeX key that usually contains proceedings titles. */
-	private static final String proceedingsKey = "booktitle";
+	/** BibTeX key for the author. */
+	private static final String authorKey = "author";
 
 	/** Main method. */
 	public static void main(String[] args) throws Exception {
@@ -89,7 +96,14 @@ public class MendeleyBibFixer {
 
 			// Checks if it's the title line. Separates it so it can be the 1st line of the BibTeX item.
 			else if (line.startsWith(titleKey))
-				titleLine = " " + line + "\n";
+				titleLine = " " + replaceOrdinals(line) + "\n";
+			
+			// Checks if it's the author line. Checks if we should collapse the author list.
+			else if (line.startsWith(authorKey)) {
+				int numAuthors = countAuthors(line);
+				if (numAuthors > collapseAuthorsCount) line = collapseAuthors(line);
+				builder.append(' ').append(replaceOrdinals(line)).append('\n');
+			}
 
 			// Checks if it's the URL line. Separates it so it can be the BibTeX item's comment.
 			else if (line.startsWith(urlKey)) {
@@ -100,13 +114,9 @@ public class MendeleyBibFixer {
 				}
 			}
 			
-			// Checks if it's the line that contains the proceedings name, so it can put the ordinals in overscript.
-			else if (line.startsWith(proceedingsKey))
-				builder.append(' ').append(replaceOrdinals(line)).append('\n');
-
 			// Otherwise, check if the line is blacklisted and include in the output if it's not.
 			else if (!isBlacklisted(line))
-				builder.append(' ').append(line).append('\n');
+				builder.append(' ').append(replaceOrdinals(line)).append('\n');
 		}
 
 		// Closes everything.
@@ -127,6 +137,7 @@ public class MendeleyBibFixer {
 			String sOutputFile = props.getProperty("output-file").trim();
 			String sBlacklist = props.getProperty("blacklist").trim();
 			String sDoOverscript = props.getProperty("do-overscript").trim();
+			String sCollapseAuthorsCount = props.getProperty("collapse-authors-count").trim();
 			
 			if ((sInputFile != null) && (! sInputFile.isEmpty())) BIB_FILE_INPUT_PATH = sInputFile;
 			if ((sOutputFile != null) && (! sOutputFile.isEmpty())) BIB_FILE_OUTPUT_PATH = sOutputFile;
@@ -138,6 +149,16 @@ public class MendeleyBibFixer {
 			if ((sDoOverscript != null) && (! sDoOverscript.isEmpty())) {
 				if ("true".equals(sDoOverscript)) doOverscript = true;
 				if ("false".equals(sDoOverscript)) doOverscript = false;
+			}
+			
+			if ((sCollapseAuthorsCount != null) && (! sCollapseAuthorsCount.isEmpty())) {
+				try {
+					int cac = Integer.parseInt(sCollapseAuthorsCount);
+					collapseAuthorsCount = cac;
+				}
+				catch (NumberFormatException e) {
+					System.out.println("Invalid value for collapse-authors-count property (" + sCollapseAuthorsCount + "). Using default value: " + collapseAuthorsCount);
+				}
 			}
 		}
 	}
@@ -185,6 +206,36 @@ public class MendeleyBibFixer {
 	private static String replaceEscaped(String line) {
 		for (int i = 0; i < escaped.length; i++)
 			line = line.replaceAll(escaped[i], nonEscaped[i]);
+		return line;
+	}
+
+	/** Counts the number of authors in the author line. */
+	private static int countAuthors(String line) {
+		boolean openQuote = false;
+		boolean openBrackets = true;
+		int authorCount = 0;
+		int len = line.length();
+		for (int i = 0; i < len; i++) {
+			char c = line.charAt(i);
+			if ((c == '"') && (i != 0) && (line.charAt(i - 1) != '\\')) openQuote = ! openQuote;
+			else if ((c == '{') || (c == '}')) openBrackets = ! openBrackets;
+			else if (! openQuote && ! openBrackets && (c == 'a') && (i != 0) && (line.substring(i - 1).startsWith(" and "))) authorCount++;
+		}
+		return authorCount + 1;
+	}
+
+	private static String collapseAuthors(String line) {
+		boolean openQuote = false;
+		boolean openBrackets = true;
+		int andIdx = -1;
+		int len = line.length();
+		for (int i = 0; andIdx == -1 && i < len; i++) {
+			char c = line.charAt(i);
+			if ((c == '"') && (i != 0) && (line.charAt(i - 1) != '\\')) openQuote = ! openQuote;
+			else if ((c == '{') || (c == '}')) openBrackets = ! openBrackets;
+			else if (! openQuote && ! openBrackets && (c == 'a') && (i != 0) && (line.substring(i - 1).startsWith(" and "))) andIdx = i + 3;
+		}
+		if (andIdx != -1) line = line.substring(0, andIdx) + " others},";
 		return line;
 	}
 }
