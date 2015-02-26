@@ -4,11 +4,16 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import mp3.Mp3Utils;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Domain class used by Mp3CheckTagsAndFolders.
+ *
+ * @author Vítor E. Silva Souza (vitorsouza@gmail.com)
+ * @version 1.0
+ */
 public class Track implements Comparable<Track> {
 	private static final Logger log = Logger.getLogger(Track.class);
 
@@ -21,7 +26,7 @@ public class Track implements Comparable<Track> {
 	private String name;
 
 	private File file;
-	
+
 	private Map<String, Object> extras = new HashMap<String, Object>();
 
 	public Track(Album album, File file) {
@@ -45,7 +50,7 @@ public class Track implements Comparable<Track> {
 		name = name.substring(idxB + 2);
 		idxB = name.indexOf('.');
 		number = Integer.parseInt(name.substring(0, idxB));
-		
+
 		// Gets the name of the track from the name of the file.
 		this.name = name.substring(idxB + 2, name.length() - 4);
 		log.debug("Extracted track artist, number and name: " + artistName + " / " + number + " / " + this.name);

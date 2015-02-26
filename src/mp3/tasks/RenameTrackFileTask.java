@@ -6,6 +6,13 @@ import mp3.domain.Track;
 
 import org.apache.log4j.Logger;
 
+/**
+ * One of the tasks used by Mp3CheckTagsAndFolders, which builds a task list, confirms all actions and only then
+ * performs the tasks.
+ *
+ * @author Vítor E. Silva Souza (vitorsouza@gmail.com)
+ * @version 1.0
+ */
 public class RenameTrackFileTask extends RenameTask {
 	private static final Logger log = Logger.getLogger(RenameTrackFileTask.class);
 
@@ -25,10 +32,10 @@ public class RenameTrackFileTask extends RenameTask {
 	@Override
 	public int compareTo(Task o) {
 		// If not the same kind of rename task, use the superclass' implementation.
-		if (! (o instanceof RenameTrackFileTask)) return super.compareTo(o);
-		
+		if (!(o instanceof RenameTrackFileTask)) return super.compareTo(o);
+
 		// If it's the same, compare by track. There shouldn't be two tasks for the same track.
-		else return track.compareTo(((RenameTrackFileTask)o).track);
+		else return track.compareTo(((RenameTrackFileTask) o).track);
 	}
 
 	@Override

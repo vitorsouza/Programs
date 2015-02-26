@@ -9,7 +9,6 @@ import java.text.NumberFormat;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-
 import mp3.domain.Artist;
 
 import org.apache.log4j.Logger;
@@ -23,8 +22,7 @@ import org.apache.log4j.Logger;
 public class Mp3Utils {
 	private static final Logger log = Logger.getLogger(Mp3Utils.class);
 
-	public static final NumberFormat trackNumberFormat = NumberFormat
-			.getIntegerInstance();
+	public static final NumberFormat trackNumberFormat = NumberFormat.getIntegerInstance();
 	static {
 		trackNumberFormat.setMinimumIntegerDigits(2);
 	}
@@ -72,8 +70,10 @@ public class Mp3Utils {
 			byte[] buffer = new byte[4096];
 			int bytesRead;
 
-			while ((bytesRead = from.read(buffer)) != -1) to.write(buffer, 0, bytesRead);
-		} finally {
+			while ((bytesRead = from.read(buffer)) != -1)
+				to.write(buffer, 0, bytesRead);
+		}
+		finally {
 			if (from != null) from.close();
 			if (to != null) to.close();
 		}

@@ -21,14 +21,14 @@ import org.cmc.music.metadata.MusicMetadataSet;
 import org.cmc.music.myid3.MyID3;
 
 /**
- * Goes through all subdirectories of a root folder (constant ROOT) and checks if the names of Mp3 files and their folders match
- * the contents of their ID3 tags. Using ID3v2 tags only and files should obey structure: <Artist Name>/(<Album Year>) <Album
- * Name>/[<Track Artist Name>] <Track Number>. <Track Name>.mp3.
+ * Goes through all subdirectories of a root folder (constant ROOT) and checks if the names of Mp3 files and their
+ * folders match the contents of their ID3 tags. Using ID3v2 tags only and files should obey structure: <Artist
+ * Name>/(<Album Year>) <Album Name>/[<Track Artist Name>] <Track Number>. <Track Name>.mp3.
  * 
- * DEPENDS ON: metadata-extractor-2.3.1.jar
+ * DEPENDS ON: myid3.jar
  * 
- * Created this program to check if the folder structure and file names of the MP3 songs match the ID3 tags set by MusicBrainz
- * Picard after I organize the albums.
+ * Created this program to check if the folder structure and file names of the MP3 songs match the ID3 tags set by
+ * MusicBrainz Picard after I organize the albums.
  * 
  * @author Vitor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0

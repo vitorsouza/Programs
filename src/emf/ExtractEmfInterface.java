@@ -12,8 +12,8 @@ import java.util.Set;
 /**
  * Extracts an EMF interface from a class in the classpath (specified by the constant CLASS_FQN).
  * 
- * I created this program because I was using Eclipse's OCL infrastructure and needed the Calendar class represented in EMF in
- * order to refer to some of its methods and attributes.
+ * I created this program because I was using Eclipse's OCL infrastructure and needed the Calendar class represented in
+ * EMF in order to refer to some of its methods and attributes.
  * 
  * @author Vitor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0
@@ -73,8 +73,7 @@ public class ExtractEmfInterface {
 				for (int i = 0; i < paramClasses.length; i++) {
 					Class paramClass = paramClasses[i];
 					paramDef.append(paramClass.getSimpleName()).append(" param").append(i);
-					if (i != paramClasses.length - 1)
-						paramDef.append(", ");
+					if (i != paramClasses.length - 1) paramDef.append(", ");
 				}
 
 				// Exceptions can be ignored for our EMF purposes.

@@ -8,13 +8,13 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Reads two files containing the results of the "dir /a /s" Windows command and tries to identify files that are probably the
- * same. Compares files first by name, then by size, then by timestamp.
+ * Reads two files containing the results of the "dir /a /s" Windows command and tries to identify files that are
+ * probably the same. Compares files first by name, then by size, then by timestamp.
  * 
- * I created this program because I had downloaded pictures from the digital camera into my computer and my sister-in-law
- * downloaded photos also from the same digital camera. Since this happened during a trip that lasted many days we didn't know if
- * we had the same set of photos or if one had photos the other didn't. Since the names depend on the software used to download
- * them, I used this program to try and identify matches.
+ * I created this program because I had downloaded pictures from the digital camera into my computer and my
+ * sister-in-law downloaded photos also from the same digital camera. Since this happened during a trip that lasted many
+ * days we didn't know if we had the same set of photos or if one had photos the other didn't. Since the names depend on
+ * the software used to download them, I used this program to try and identify matches.
  * 
  * @author Vitor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0
@@ -133,8 +133,7 @@ public class FileMatcher {
 		Map<String, FileInfo> sizeOnlyFileInfoMap = new HashMap<String, FileInfo>();
 		for (FileInfo fileInfo : fileInfoMap.values()) {
 			String key = fileInfo.size;
-			if (sizeOnlyFileInfoMap.containsKey(key))
-				System.out.println("Ooops! Two files with exact same size (" + key + "): " + fileInfo.name + " and " + sizeOnlyFileInfoMap.get(key).name);
+			if (sizeOnlyFileInfoMap.containsKey(key)) System.out.println("Ooops! Two files with exact same size (" + key + "): " + fileInfo.name + " and " + sizeOnlyFileInfoMap.get(key).name);
 			else sizeOnlyFileInfoMap.put(key, fileInfo);
 		}
 
@@ -145,8 +144,7 @@ public class FileMatcher {
 		Map<String, FileInfo> dateTimeOnlyFileInfoMap = new HashMap<String, FileInfo>();
 		for (FileInfo fileInfo : fileInfoMap.values()) {
 			String key = fileInfo.date + " " + fileInfo.time;
-			if (dateTimeOnlyFileInfoMap.containsKey(key))
-				System.out.println("Ooops! Two files with exact same date/time (" + key + "): " + fileInfo.name + " and " + dateTimeOnlyFileInfoMap.get(key).name);
+			if (dateTimeOnlyFileInfoMap.containsKey(key)) System.out.println("Ooops! Two files with exact same date/time (" + key + "): " + fileInfo.name + " and " + dateTimeOnlyFileInfoMap.get(key).name);
 			else dateTimeOnlyFileInfoMap.put(key, fileInfo);
 		}
 

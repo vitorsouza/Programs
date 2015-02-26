@@ -8,36 +8,41 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Domain class used by Mp3CheckTagsAndFolders.
+ *
+ * @author Vítor E. Silva Souza (vitorsouza@gmail.com)
+ * @version 1.0
+ */
 public class Artist implements Comparable<Artist> {
 	private static final Logger log = Logger.getLogger(Artist.class);
-	
+
 	private String name;
-	
+
 	private File folder;
-	
+
 	private SortedSet<Album> albums;
-	
+
 	private Map<String, Object> extras = new HashMap<String, Object>();
-	
+
 	public Artist(File folder) {
 		this.folder = folder;
-		
+
 		log.debug("Reading artist from folder: " + folder.getAbsolutePath());
 		extractInfo();
 	}
-	
+
 	protected void extractInfo() {
 		// TODO: check string pattern, throw malformed name exception and treat it elsewhere.
-		
+
 		// Gets the name of the artist from the name of the folder.
 		this.name = folder.getName();
 		log.debug("Extracted artist name: " + name);
-		
+
 		// Checks for albums in the subdirectories.
 		albums = new TreeSet<Album>();
 		for (File albumDir : folder.listFiles()) {
-			if (albumDir.isDirectory())
-				albums.add(new Album(this, albumDir));
+			if (albumDir.isDirectory()) albums.add(new Album(this, albumDir));
 		}
 	}
 

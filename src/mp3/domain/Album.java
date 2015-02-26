@@ -6,43 +6,48 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-
 import mp3.Mp3Utils;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Domain class used by Mp3CheckTagsAndFolders.
+ *
+ * @author Vítor E. Silva Souza (vitorsouza@gmail.com)
+ * @version 1.0
+ */
 public class Album implements Comparable<Album> {
 	private static final Logger log = Logger.getLogger(Album.class);
-	
+
 	private Artist artist;
-	
+
 	private String name;
-	
+
 	private Integer year;
-	
+
 	private File folder;
-	
+
 	private SortedSet<Track> tracks;
-	
+
 	private Map<String, Object> extras = new HashMap<String, Object>();
-	
+
 	public Album(Artist artist, File folder) {
 		this.artist = artist;
 		this.folder = folder;
-		
+
 		log.debug("Reading album from folder: " + folder.getAbsolutePath());
 		extractInfo();
 	}
-	
+
 	protected void extractInfo() {
 		// TODO: check string pattern, throw malformed name exception and treat it elsewhere.
-		
+
 		// Gets the year of the album from the name of the folder.
 		String name = folder.getName();
 		int idxA = name.indexOf('(');
 		int idxB = name.indexOf(')');
 		year = Integer.parseInt(name.substring(idxA + 1, idxB));
-		
+
 		// Gets the name of the album from the name of the folder.
 		this.name = name.substring(idxB + 2);
 		log.debug("Extracted album year and name: " + year + " / " + this.name);
@@ -50,8 +55,7 @@ public class Album implements Comparable<Album> {
 		// Checks for tracks in the files.
 		tracks = new TreeSet<Track>();
 		for (File trackFile : folder.listFiles()) {
-			if (trackFile.isFile() && Mp3Utils.MP3_FILTER.accept(trackFile))
-				tracks.add(new Track(this, trackFile));
+			if (trackFile.isFile() && Mp3Utils.MP3_FILTER.accept(trackFile)) tracks.add(new Track(this, trackFile));
 		}
 	}
 

@@ -5,14 +5,14 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
- * Reads a chunk of HTML from a file (constant inName) relative to the elements present in an HTML listbox (<option /> tags, one
- * per line) and extracts the contents of each option (the text between quotes, e.g., <option
- * value="vitorsouza@gmail.com">vitorsouza@gmail.com</option>. Writes the values in a new file (constant outName), also one per
- * line.
+ * Reads a chunk of HTML from a file (constant inName) relative to the elements present in an HTML listbox (<option />
+ * tags, one per line) and extracts the contents of each option (the text between quotes, e.g., <option
+ * value="vitorsouza@gmail.com">vitorsouza@gmail.com</option>. Writes the values in a new file (constant outName), also
+ * one per line.
  * 
- * I created this program to extract the e-mail addresses of the members of the Espírito Santo JUG (esjug.dev.java.net) mailing
- * list and also quickly count how many participants we had registered. It worked in the older version of java.net, haven't tried
- * with the new one.
+ * I created this program to extract the e-mail addresses of the members of the Espírito Santo JUG (esjug.dev.java.net)
+ * mailing list and also quickly count how many participants we had registered. It worked in the older version of
+ * java.net, haven't tried with the new one.
  * 
  * @author Vitor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0
