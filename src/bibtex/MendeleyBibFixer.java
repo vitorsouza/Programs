@@ -250,7 +250,6 @@ public class MendeleyBibFixer {
 		Integer[] urlIdxs = findUrls(line);
 		if (urlIdxs != null) for (int i = 0; i < urlIdxs.length; i++) {
 			int a = urlIdxs[i], b = urlIdxs[++i];
-			String url = line.substring(a, b);
 			line = line.substring(0, a) + "\\url{" + line.substring(a, b) + "}" + line.substring(b);
 		}
 		return line;

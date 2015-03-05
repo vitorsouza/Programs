@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class UfesExtractStudentNamesFromCSV {
-	private static final String FILE_PATH = "/Users/vitor/Downloads/2014.2.INF09307-02.csv";
+	private static final String FILE_PATH = "/Users/vitor/Downloads/2015.1.INF09307-02-lp2.csv";
 
 	public static void main(String[] args) throws Exception {
 		File file = new File(FILE_PATH);

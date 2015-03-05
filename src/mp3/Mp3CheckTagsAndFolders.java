@@ -132,13 +132,14 @@ public class Mp3CheckTagsAndFolders {
 			System.out.println("Continue? (y/N)");
 
 			// Read confirmation.
-			Scanner scanner = new Scanner(System.in);
-			String answer = scanner.nextLine();
-			if ((answer.length() > 0) && ("y".equalsIgnoreCase("" + answer.charAt(0)))) {
-				// Run tasks.
-				for (Task t : tasks) {
-					log.info("Fix # " + (++fixes) + ". Executing task: " + t);
-					t.execute();
+			try (Scanner scanner = new Scanner(System.in)) {
+				String answer = scanner.nextLine();
+				if ((answer.length() > 0) && ("y".equalsIgnoreCase("" + answer.charAt(0)))) {
+					// Run tasks.
+					for (Task t : tasks) {
+						log.info("Fix # " + (++fixes) + ". Executing task: " + t);
+						t.execute();
+					}
 				}
 			}
 

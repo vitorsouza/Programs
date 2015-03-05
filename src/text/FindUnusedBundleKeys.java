@@ -59,9 +59,10 @@ public class FindUnusedBundleKeys {
 			for (File src : sources)
 				if (src.isFile()) {
 					List<String> lines = new ArrayList<String>();
-					Scanner scanner = new Scanner(src);
-					while (scanner.hasNextLine())
-						lines.add(scanner.nextLine());
+					try (Scanner scanner = new Scanner(src)) {
+						while (scanner.hasNextLine())
+							lines.add(scanner.nextLine());
+					}
 
 					sourceMap.put(src.getName(), lines);
 				}

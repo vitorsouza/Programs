@@ -149,28 +149,29 @@ public class NewFileMatcher {
 	}
 
 	private static Map<String, FileInfo> buildFileInfoMap(File file) throws Exception {
-		Scanner scanner = new Scanner(file);
 		Map<String, FileInfo> map = new HashMap<String, FileInfo>();
-		String folder = "";
-
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine();
-
-			if (line.matches(FILE_MATCH)) {
-				String date = line;
-				String time = line.substring(line.indexOf(' ')).trim();
-				String size = time.substring(time.indexOf(' ')).trim();
-				String name = size.substring(size.indexOf(' ')).trim();
-
-				date = date.substring(0, date.indexOf(' ')).trim();
-				time = time.substring(0, time.indexOf(' ')).trim();
-				size = size.substring(0, size.indexOf(' ')).trim();
-
-				map.put(name, new FileInfo(name, date, time, size, folder));
-			}
-
-			else if (line.startsWith(" Directory of ")) {
-				folder = line.substring(14).trim();
+		try (Scanner scanner = new Scanner(file)) {
+			String folder = "";
+	
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+	
+				if (line.matches(FILE_MATCH)) {
+					String date = line;
+					String time = line.substring(line.indexOf(' ')).trim();
+					String size = time.substring(time.indexOf(' ')).trim();
+					String name = size.substring(size.indexOf(' ')).trim();
+	
+					date = date.substring(0, date.indexOf(' ')).trim();
+					time = time.substring(0, time.indexOf(' ')).trim();
+					size = size.substring(0, size.indexOf(' ')).trim();
+	
+					map.put(name, new FileInfo(name, date, time, size, folder));
+				}
+	
+				else if (line.startsWith(" Directory of ")) {
+					folder = line.substring(14).trim();
+				}
 			}
 		}
 

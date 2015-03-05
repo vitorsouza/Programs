@@ -82,9 +82,9 @@ import com.google.api.services.calendar.model.EventDateTime;
 public class CreateGoogleAppointmentsForClass {
 	private static final TimeZone MY_TIME_ZONE = TimeZone.getTimeZone("BRT");
 
-	private static final String PROPERTIES_FILE = "lp-2015-1.properties";
+	private static final String PROPERTIES_FILE = "dwws-2015-1.properties";
 
-	private static final String CSV_FILE = "lp-2015-1.csv";
+	private static final String CSV_FILE = "dwws-2015-1.csv";
 
 	private static final String CSV_DELIMITER = "\\s*;\\s*";
 
@@ -196,7 +196,7 @@ public class CreateGoogleAppointmentsForClass {
 		event.setEnd(new EventDateTime().setDateTime(endDateTime));
 
 		// Stores the event in Google Calendar.
-		Event result = client.events().insert(googleCalendar.getId(), event).execute();
+		client.events().insert(googleCalendar.getId(), event).execute();
 	}
 
 	/** Authorizes the installed application to access user's protected data. */

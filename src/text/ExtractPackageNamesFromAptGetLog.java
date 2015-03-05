@@ -16,21 +16,23 @@ import java.util.Scanner;
 public class ExtractPackageNamesFromAptGetLog {
 	public static void main(String[] args) throws Exception {
 		File log = new File("apt.log");
-		Scanner scanner = new Scanner(log);
-		String line = scanner.nextLine();
-
-		StringBuilder names = new StringBuilder();
-
-		Scanner lineScanner = new Scanner(line);
-		lineScanner.useDelimiter("\\),\\s*");
-		while (lineScanner.hasNext()) {
-			String token = lineScanner.next();
-			int idx = token.indexOf(':');
-			String pkg = token.substring(0, idx);
-			names.append(pkg).append(' ');
-			System.out.println(pkg);
+		try (Scanner scanner = new Scanner(log)) {
+			String line = scanner.nextLine();
+	
+			StringBuilder names = new StringBuilder();
+	
+			try (Scanner lineScanner = new Scanner(line)) {
+				lineScanner.useDelimiter("\\),\\s*");
+				while (lineScanner.hasNext()) {
+					String token = lineScanner.next();
+					int idx = token.indexOf(':');
+					String pkg = token.substring(0, idx);
+					names.append(pkg).append(' ');
+					System.out.println(pkg);
+				}
+			}
+	
+			System.out.println(names);
 		}
-
-		System.out.println(names);
 	}
 }
