@@ -16,7 +16,7 @@ import org.jsoup.select.Elements;
  * @version 1.0
  */
 public class ParseUfesStudentsTable {
-	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado";
+	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/ppgi/lista-de-discentes-de-doutorado";
 
 	private static final Set<String> supervisorFilter = new HashSet<>();
 	static {

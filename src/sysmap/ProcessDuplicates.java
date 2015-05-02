@@ -58,6 +58,15 @@ public class ProcessDuplicates {
 				// Reads each line and breaks the information in CSV format.
 				String line = scanner.nextLine().trim();
 				String[] data = line.split(";");
+				
+				// Checks if the column separator has been used inside a cell.
+				if (data.length != 3) {
+					System.out.println("\nFATAL: separator used inside a cell. Even if quoted, this script doesn't support this. Please \"fix\" the source file:");
+					System.out.printf("%d: %s%n%n", count, line);
+					System.exit(1);
+				}
+				
+				// Extracts the information from the columns.
 				String source = data[0].trim();
 				int year = Integer.parseInt(data[1].trim());
 				String title = data[2].trim().replace("\"", "");

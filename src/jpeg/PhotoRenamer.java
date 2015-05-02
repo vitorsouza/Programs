@@ -129,7 +129,7 @@ public class PhotoRenamer {
 
 				// Prints the prompt and reads the command.
 				System.out.println(builder.toString());
-				System.out.println("[Q = Quit, # = Fix photo number #, +# = advance all photos plus # hours, C = Copy from digitized, N = Fix all nulls, Y = Fix different years, R = Rename the files and quits.]");
+				System.out.println("[Q = Quit, # = Fix photo number #, +# = advance all photos plus # hours, %# = ditto, for minutes, C = Copy from digitized, N = Fix all nulls, Y = Fix different years, R = Rename the files and quits.]");
 				System.out.print("> ");
 				command = scanner.nextLine();
 
@@ -160,6 +160,10 @@ public class PhotoRenamer {
 
 				case '+':
 					advanceHour(command.substring(1));
+					break;
+
+				case '%':
+					advanceMinute(command.substring(1));
 					break;
 
 				default:
@@ -215,6 +219,16 @@ public class PhotoRenamer {
 		for (int i = 0; i < photoFiles.size(); i++) {
 			calendar.setTime(photoDatesOriginal.get(i));
 			calendar.add(Calendar.HOUR, hours);
+			photoDatesOriginal.set(i, calendar.getTime());
+		}
+	}
+
+	private static void advanceMinute(String param) throws Exception {
+		int minutes = Integer.parseInt(param);
+		Calendar calendar = Calendar.getInstance();
+		for (int i = 0; i < photoFiles.size(); i++) {
+			calendar.setTime(photoDatesOriginal.get(i));
+			calendar.add(Calendar.MINUTE, minutes);
 			photoDatesOriginal.set(i, calendar.getTime());
 		}
 	}
