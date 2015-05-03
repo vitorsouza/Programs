@@ -13,7 +13,7 @@ import java.util.Scanner;
 import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifDirectoryBase;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 
 /**
  * Processes all JPEG photos of a specific folder (constant ROOT_FOLDER_PATH) and for each of them tries to extract EXIF
@@ -83,14 +83,14 @@ public class PhotoRenamer {
 		}
 		else {
 			// Obtains the EXIF directory in the meta-data, checking if it exists.
-			Directory directory = metadata.getFirstDirectoryOfType(ExifDirectoryBase.class);
+			Directory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 			if (directory == null) {
 				System.out.println("[WARNING] " + photoFile.getName() + "'s meta-data doesn't contain an EXIF directory.");
 			}
 			else {
 				// Checks for different date tags.
-				if (directory.containsTag(ExifDirectoryBase.TAG_DATETIME_DIGITIZED)) originalDate = directory.getDate(ExifDirectoryBase.TAG_DATETIME_DIGITIZED);
-				if (directory.containsTag(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)) digitizedDate = directory.getDate(ExifDirectoryBase.TAG_DATETIME_ORIGINAL);
+				if (directory.containsTag(ExifSubIFDDirectory.TAG_DATETIME_DIGITIZED)) originalDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_DIGITIZED);
+				if (directory.containsTag(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)) digitizedDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
 			}
 		}
 

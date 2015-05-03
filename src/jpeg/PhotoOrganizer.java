@@ -6,7 +6,8 @@ import java.io.FileFilter;
 import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifDirectoryBase;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.ExifIFD0Directory;
 
 /**
  * Processes all JPEG photos of a specific folder (constant ROOT_FOLDER_PATH) and for each of them tries to extract EXIF
@@ -52,14 +53,14 @@ public class PhotoOrganizer {
 			Metadata metadata = JpegMetadataReader.readMetadata(photoFile);
 
 			// Obtains the EXIF directory in the meta-data, checking if it exists.
-			Directory directory = metadata.getFirstDirectoryOfType(ExifDirectoryBase.class);
+			Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
 			if (directory == null) {
 				System.out.println("[WARNING] " + photoFile.getName() + "'s meta-data doesn't contain an EXIF directory.");
 			}
 			else {
 				// Checks for different date tags.
-				if (directory.containsTag(ExifDirectoryBase.TAG_MAKE)) make = directory.getString(ExifDirectoryBase.TAG_MAKE);
-				if (directory.containsTag(ExifDirectoryBase.TAG_MODEL)) model = directory.getString(ExifDirectoryBase.TAG_MODEL);
+				if (directory.containsTag(ExifIFD0Directory.TAG_MAKE)) make = directory.getString(ExifIFD0Directory.TAG_MAKE);
+				if (directory.containsTag(ExifIFD0Directory.TAG_MODEL)) model = directory.getString(ExifIFD0Directory.TAG_MODEL);
 			}
 
 			// Creates the name of the sub-directory.
