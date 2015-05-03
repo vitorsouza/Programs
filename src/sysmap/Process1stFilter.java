@@ -2,11 +2,7 @@ package sysmap;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * Reads a CSV file with the result of the 1st filter of a systematic mapping search, selecting those who have been
