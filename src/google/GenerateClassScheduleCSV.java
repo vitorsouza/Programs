@@ -47,7 +47,7 @@ import java.util.TreeSet;
  * @version 1.0
  */
 public class GenerateClassScheduleCSV {
-	private static final String PROPERTIES_FILE = "dwws-2015-1.properties";
+	private static final String PROPERTIES_FILE = "lp-2015-2.properties";
 
 	private static final char CSV_DELIMITER = ';';
 

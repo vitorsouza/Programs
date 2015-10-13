@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
  * TODO: document this type.
  *
  * @author Pedro Negri
- * @version 1.0
+ * @version 1.1
  */
 public class SpringerParser {
 	private static final String START_URL = "http://link.springer.com/search/page/1?facet-discipline=%22Computer+Science%22&query=%28%28%22requirements+model%22+OR+%22requirements+reflection%22+OR+%22requirements+engineering%22+OR+%22requirements+analysis%22+OR+%22gore%22+OR+%22goal+model%22+OR+%22goal+models%22+OR+%22goal+analysis%22+OR+%22goal+reasoning%22+OR+%22softgoals%22+OR+%22specification+of+goals%22%29+AND+%28%22runtime%22+OR+%22run+time%22+OR+%22monitoring%22%29%29&facet-content-type=%22Article%22";
@@ -43,34 +43,20 @@ public class SpringerParser {
 			
 			String paper;
 			for (Element li : lis){
-			//	Element li = lis.first();
+
 				paperUrl = "http://link.springer.com" + li.select("h2").first().select("a").first().attr("href");
-				//System.out.println(paperUrl);
-				
 				paperDoc = Jsoup.connect(paperUrl).timeout(10000*10000).get();
-				
-				//System.out.println(paperDoc.select("#title").html());
-				//System.out.println(paperDoc.select(".abstract-content.formatted").select(".a-plus-plus").first().html());
-				keyLis = paperDoc.select("ul.abstract-keywords").select("li");
-				//for(Element keyLi : keyLis){
-				//	System.out.print(keyLi.html() + ", ");
-				//}
-				//System.out.println("\n");
-				
-				paper = paperDoc.select("#title").html() + "\n";
-				if(!paperDoc.select(".abstract-content.formatted").isEmpty()){
-					if(!paperDoc.select(".abstract-content.formatted").select(".a-plus-plus").isEmpty()){
-						paper = paper + paperDoc.select(".abstract-content.formatted").select(".a-plus-plus").first().html() + "\n";	
-					}					
-				}
+
+				keyLis = paperDoc.select("div.KeywordGroup").select("span");
+				paper = paperDoc.select(".ArticleTitle").text() + "\n";
+				paper = paper + paperDoc.select(".Para").html() + "\n";
 				for(Element keyLi : keyLis){
 					paper = paper + keyLi.html() + ", ";
 				}
-				paper = paper + "\n\n";
-					
+				paper = paper + "\n";
 				papers.add(paper);
 
-
+				//System.out.println(paper);
 				
 			}
 
@@ -83,16 +69,12 @@ public class SpringerParser {
 			if (url != null && url.startsWith("/"))
 				url = baseUrl + url;
 			
-			
+
 		}
 		String pl;
 		for(String p : papers){
 			
-			System.out.println(p);
-			
 			pl = p.toLowerCase();
-			
-			
 			
 			if((pl.contains("requirements model") |
 					pl.contains("requirements reflection") |
@@ -109,7 +91,7 @@ public class SpringerParser {
 					(pl.contains("runtime") |
 					pl.contains("run time") |
 					pl.contains("monitoring"))){
-				//System.out.println(p);	
+				System.out.println(p);	
 			}
 			
 			
