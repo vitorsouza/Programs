@@ -34,6 +34,12 @@ public class Publication {
 	/** Publication year. */
 	private int year;
 	
+	/** Publication's keywords. */
+	private String keywords;
+	
+	/** Publication's abstract. */
+	private String abztract;
+	
 	/** Sources that have returned this publication as result of the search. */
 	private Set<String> sources = new TreeSet<>();
 
@@ -42,6 +48,13 @@ public class Publication {
 		this.title = title;
 		this.year = year;
 		sources.add(source);
+	}
+	
+	/** Constructor. */
+	public Publication(String title, int year, String keywords, String abztract, String source) {
+		this(title, year, source);
+		this.keywords = keywords;
+		this.abztract = abztract;
 	}
 
 	/** Getter for title. */
@@ -72,6 +85,32 @@ public class Publication {
 	/** Setter for sources. */
 	public void setSources(Set<String> sources) {
 		this.sources = sources;
+	}
+	
+	/** Getter for keywords. */
+	public String getKeywords() {
+		return keywords;
+	}
+
+	/** Setter for keywords. */
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	/** Getter for abztract. */
+	public String getAbztract() {
+		return abztract;
+	}
+
+	/** Setter for abztract. */
+	public void setAbztract(String abztract) {
+		this.abztract = abztract;
+	}
+
+	/** Returns the only publication source for publications that have only one. */
+	public String getOnlySource() {
+		if (sources.size() == 1) return sources.iterator().next();
+		else throw new IllegalStateException("Publication \"" + title + "\" has " + sources.size() + " sources!");
 	}
 	
 	/** Merges one publication with another. */

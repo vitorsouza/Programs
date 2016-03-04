@@ -82,9 +82,9 @@ import com.google.api.services.calendar.model.EventDateTime;
 public class CreateGoogleAppointmentsForClass {
 	private static final TimeZone MY_TIME_ZONE = TimeZone.getTimeZone("BRT");
 
-	private static final String PROPERTIES_FILE = "lp-2015-2.properties";
+	private static final String PROPERTIES_FILE = "dwws-2016-1.properties";
 
-	private static final String CSV_FILE = "lp-2015-2.csv";
+	private static final String CSV_FILE = "dwws-2016-1.csv";
 
 	private static final String CSV_DELIMITER = "\\s*;\\s*";
 

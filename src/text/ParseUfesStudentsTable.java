@@ -26,7 +26,9 @@ public class ParseUfesStudentsTable {
 	
 	private static final String OUTPUT_FILE_PATH = "parse-ufes-students.html";
 	
-	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado";
+	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado
+	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado
+	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado";
 
 	private static final String SELECTOR_TABLE = "table";
 
