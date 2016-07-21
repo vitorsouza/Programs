@@ -28,7 +28,7 @@ public class ParseUfesStudentsTable {
 	
 	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado
 	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado
-	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado";
+	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado";
 
 	private static final String SELECTOR_TABLE = "table";
 

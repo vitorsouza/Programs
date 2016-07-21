@@ -38,7 +38,7 @@ public class MendeleyBibFixer {
 	private static final String[] overscript = new String[] { "st", "nd", "rd", "th" };
 
 	/** Characters to un-escape. */
-	private static final String[] escaped = new String[] { "\\\\\\&", "\\\\_", "\\\\%", "\\\\#", "\\\\~\\{\\}" };
+	private static final String[] escaped = new String[] { "\\\\\\&", "\\{\\\\_\\}", "\\\\%", "\\\\#", "\\\\~\\{\\}" };
 
 	/** Un-escaped versions of above characters. */
 	private static final String[] nonEscaped = new String[] { "&", "_", "%", "#", "~" };
@@ -117,7 +117,7 @@ public class MendeleyBibFixer {
 			else if (line.startsWith(urlKey)) {
 				int idx = line.indexOf('{');
 				if (idx != -1) {
-					int idxB = line.indexOf('}');
+					int idxB = line.lastIndexOf('}');
 					urlLine = "% Source: " + replaceEscaped(line.substring(idx + 1, idxB));
 				}
 			}
