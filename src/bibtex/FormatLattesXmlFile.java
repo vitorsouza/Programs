@@ -13,7 +13,7 @@ import org.w3c.dom.ls.LSSerializer;
 
 public class FormatLattesXmlFile {
 	/** Path to the XML file that contains the Lattes CV to be parsed. */
-	private static final String LATTES_XML_FILE_PATH = "lattes-ppgi/celso.xml";
+	private static final String LATTES_XML_FILE_PATH = "curriculo-vitor.xml";
 
 	/** Path to the output file to be generated. */
 	private static final String OUTPUT_FILE_PATH = "curriculo-formatado.xml";
