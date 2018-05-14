@@ -28,7 +28,7 @@ public class ParseUfesStudentsTable {
 	
 	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado
 	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado
-	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado";
+	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado";
 
 	private static final String SELECTOR_TABLE = "table";
 
@@ -112,7 +112,7 @@ public class ParseUfesStudentsTable {
 		String url = START_URL;
 		while (url != null) {
 			// Opens the page and extracts the HTML DOM structure into Jsoup.
-			Document doc = Jsoup.connect(url).get();
+			Document doc = Jsoup.connect(url).timeout(10000).get();
 			url = null;
 
 			// Looks for the first table in the document, where the names of the students are supposed to be.
