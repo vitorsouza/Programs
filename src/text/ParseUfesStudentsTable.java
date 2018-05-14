@@ -16,16 +16,28 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * TODO: document this type.
+ * Performs HTML scrapping at the website of UFES' Post-graduate Program in Computer Science looking for current
+ * students from a certain group of professors, generating an HTML output with the information from the students to be
+ * published at a website (e.g., a research group website like nemo.inf.ufes.br).
+ * 
+ * This script depends on an input file called parse-ufes-students.csv in CSV format which should contain the following
+ * information (one line per person):
+ * 
+ * [name];[is a supervisor? (true/false)];[website URL]
+ * 
+ * The script will find students from everyone that is listed as a supervisor (true in the second column). You can also
+ * list people who are not supervisors (i.e., students) for the following reason: to indicate their website in the third
+ * column and that will be used in the HTML output instead of the standard URL from the Post-graduate program website
+ * itself.
  *
  * @author Vítor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0
  */
 public class ParseUfesStudentsTable {
 	private static final String DATA_FILE_PATH = "parse-ufes-students.csv";
-	
+
 	private static final String OUTPUT_FILE_PATH = "parse-ufes-students.html";
-	
+
 	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado
 	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado
 	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-doutorado";
@@ -45,13 +57,13 @@ public class ParseUfesStudentsTable {
 	private static final int[] COLUMNS_TO_READ = new int[] { 0, 1, 3 };
 
 	private static final int COLUMN_STUDENT = 0;
-	
+
 	private static final int COLUMN_SUPERVISOR = 3;
 
 	private static final int COLUMN_DETAIL_LINK = 0;
 
 	private static final String CSV_SEPARATOR = ";";
-	
+
 	private static final String MEMBERS_TABLE_LINE_TEMPLATE = "<tr%s>%n\t<td><a href=\"%s\">%s</a></td>%n\t<td><a href=\"%s\">%s</a></td>%n</tr>%n";
 
 	private static final Map<String, String> homepageMap = new HashMap<>();
@@ -73,16 +85,16 @@ public class ParseUfesStudentsTable {
 
 		// Performs the parsing.
 		parse();
-		
+
 		// Writes the HTML output for the website.
 		writeHtmlOutput();
-		
+
 		System.out.println("\nDone!");
 	}
 
 	private static void writeHtmlOutput() throws Exception {
 		boolean odd = false;
-		
+
 		// Opens the output file for writing.
 		try (PrintWriter out = new PrintWriter(new File(OUTPUT_FILE_PATH))) {
 			for (Map.Entry<String, String> entry : studentMap.entrySet()) {
@@ -91,10 +103,10 @@ public class ParseUfesStudentsTable {
 				String supervisor = entry.getValue();
 				String studentHomepage = homepageMap.get(student);
 				String supervisorHomepage = homepageMap.get(supervisor);
-				
+
 				// Writes a line to the output file.
 				out.printf(MEMBERS_TABLE_LINE_TEMPLATE, (odd ? " class=\"odd\"" : ""), studentHomepage, student, supervisorHomepage, supervisor);
-				odd = ! odd;
+				odd = !odd;
 			}
 		}
 	}
@@ -128,7 +140,8 @@ public class ParseUfesStudentsTable {
 
 				// Only reads the columns that have useful information for us.
 				if (!columns.isEmpty()) {
-					for (int idx : COLUMNS_TO_READ) builder.append(columns.get(idx).text()).append(CSV_SEPARATOR);
+					for (int idx : COLUMNS_TO_READ)
+						builder.append(columns.get(idx).text()).append(CSV_SEPARATOR);
 
 					// Also extracts the link to the detail page of the alumni.
 					Element cell = columns.get(COLUMN_DETAIL_LINK);
@@ -140,13 +153,13 @@ public class ParseUfesStudentsTable {
 					if (supervisorFilter.isEmpty() || supervisorFilter.contains(supervisor)) {
 						// Outputs the information in CSV.
 						System.out.println(builder);
-						
+
 						// Saves the information in the student map.
 						String student = columns.get(COLUMN_STUDENT).text();
 						studentMap.put(student, supervisor);
-						
+
 						// If the student doesn't have a homepage address yet, add her to the homepageMap.
-						if (! homepageMap.containsKey(student)) homepageMap.put(student, baseUrl + link);
+						if (!homepageMap.containsKey(student)) homepageMap.put(student, baseUrl + link);
 					}
 				}
 			}
