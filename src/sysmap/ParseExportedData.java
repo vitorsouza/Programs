@@ -15,9 +15,10 @@ import org.apache.commons.csv.CSVFormat;
  * @version 1.0
  */
 public class ParseExportedData {
-	//private static final String DATA_FOLDER = "/Users/vitor/Dropbox/Academia/Students/BP/Novas Buscas/2016.02.22/";
 	
-	private static final String OUTPUT_FILE = "sysmap-raw.csv";
+	private static final String DATA_FOLDER = "/Users/paulossjunior/Google Drive/UFES/Doutorado/Disciplinas/MetodologiaPesquisa/";
+	
+	private static final String OUTPUT_FILE = DATA_FOLDER+"sysmap-raw.csv";
 	
 	private static final Map<String, ExportedDataParser> parsers = new TreeMap<>();
 	static {
@@ -34,8 +35,8 @@ public class ParseExportedData {
 		try (PrintWriter out = new PrintWriter(outputFile)) {
 			out.println("Source;Year;Title;Keywords;Abstract");
 			
-			//File folder = new File(DATA_FOLDER);
-			File folder = new File(".");
+			File folder = new File(DATA_FOLDER);
+
 			for (Map.Entry<String, ExportedDataParser> entry : parsers.entrySet()) {
 				String fileName = entry.getKey();
 				ExportedDataParser parser = entry.getValue();
