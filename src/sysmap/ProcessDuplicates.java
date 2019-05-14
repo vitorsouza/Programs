@@ -29,15 +29,17 @@ import java.util.TreeSet;
  * @author Vítor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0
  */
-public class ProcessDuplicates {
-	/** Source file with the raw result of the search. */
-	private static final String RAW_FILENAME = "sysmap-raw.csv";
+public class ProcessDuplicates {	
+	
+	private static final String ROOT_FOLDER = "/Users/paulossjunior/Google Drive/UFES/Doutorado/Disciplinas/MetodologiaPesquisa/";
+	
+	private static final String RAW_FILENAME = ROOT_FOLDER+"sysmap-raw.csv";
 
 	/** Resulting file with duplicates grouped by title. */
-	private static final String CSV_RESULT_FILENAME = "sysmap-noduplicates.csv";
+	private static final String CSV_RESULT_FILENAME = ROOT_FOLDER+"sysmap-noduplicates.csv";
 
 	/** Resulting file in HTML to make it easier to check for the paper data. */
-	private static final String HTML_RESULT_FILENAME = "sysmap-noduplicates.html";
+	private static final String HTML_RESULT_FILENAME = ROOT_FOLDER+"sysmap-noduplicates.html";
 
 	/** Map that indexes publications by title. */
 	private static final Map<String, Publication> pubMap = new TreeMap<>();
@@ -60,7 +62,7 @@ public class ProcessDuplicates {
 				String[] data = line.split(";");
 				
 				// Checks if the column separator has been used inside a cell.
-				if (data.length != 3) {
+				if (data.length < 3) {
 					System.out.println("\nFATAL: separator used inside a cell. Even if quoted, this script doesn't support this. Please \"fix\" the source file:");
 					System.out.printf("%d: %s%n%n", count, line);
 					System.exit(1);
