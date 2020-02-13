@@ -23,18 +23,19 @@ public class BibtexEntry implements Comparable<BibtexEntry> {
 		this.entry = entry;
 
 		// Looks for the title and the year.
-		Scanner scanner = new Scanner(entry);
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine().trim();
-			if (line.startsWith("title")) {
-				int from = line.indexOf("{{");
-				int to = line.lastIndexOf("}}");
-				title = line.substring(from + 2, to);
-			}
-			if (line.startsWith("year")) {
-				int from = line.indexOf("{");
-				int to = line.lastIndexOf("}");
-				year = Integer.parseInt(line.substring(from + 1, to));
+		try (Scanner scanner = new Scanner(entry)) {
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine().trim();
+				if (line.startsWith("title")) {
+					int from = line.indexOf("{{");
+					int to = line.lastIndexOf("}}");
+					title = line.substring(from + 2, to);
+				}
+				if (line.startsWith("year")) {
+					int from = line.indexOf("{");
+					int to = line.lastIndexOf("}");
+					year = Integer.parseInt(line.substring(from + 1, to));
+				}
 			}
 		}
 	}

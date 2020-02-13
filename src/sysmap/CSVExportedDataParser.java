@@ -57,9 +57,7 @@ public class CSVExportedDataParser implements ExportedDataParser {
 	public List<Publication> parseExportedData(File file) throws Exception {
 		List<Publication> publications = new ArrayList<>();
 		
-		try (Reader reader = new FileReader(file)) {
-			CSVParser parser = new CSVParser(reader, format);
-			
+		try (Reader reader = new FileReader(file); CSVParser parser = new CSVParser(reader, format)) {
 			for (CSVRecord record : parser) {
 				if (record.getRecordNumber() > 1) {
 					int size = record.size();

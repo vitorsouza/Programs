@@ -33,9 +33,7 @@ public class FilterCSV {
 			System.out.printf("Downloading %s...%n", URLS[i]);
 			URL url = new URL(URLS[i]);
 			
-			try (Reader reader = new BufferedReader(new InputStreamReader(url.openStream())); PrintWriter out = new PrintWriter(OUTPUTS[i])) {
-				CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
-				
+			try (Reader reader = new BufferedReader(new InputStreamReader(url.openStream())); PrintWriter out = new PrintWriter(OUTPUTS[i]); CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT)) {
 				for (CSVRecord record : parser) {
 					for (int idx : indexes) out.printf("%s%s", record.get(idx), CSV_SEPARATOR);
 					out.println();

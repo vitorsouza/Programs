@@ -1,7 +1,5 @@
 package text;
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -18,7 +16,7 @@ import org.jsoup.select.Elements;
  * @version 1.0
  */
 public class ParseUfesAlumniTableForStatistics {
-	private static final String OUTPUT_FILE_PATH = "parse-ufes-alumni-statistics.csv";
+//	private static final String OUTPUT_FILE_PATH = "parse-ufes-alumni-statistics.csv";
 	
 	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-egressos";
 
@@ -87,15 +85,15 @@ public class ParseUfesAlumniTableForStatistics {
 	}
 	
 	private static void writeOutput() throws Exception {
-		boolean odd = false;
-		
-		// Opens the output file for writing.
-		try (PrintWriter out = new PrintWriter(new File(OUTPUT_FILE_PATH))) {
-			for (Alumnus alumnus : alumni) {
-				// Writes a line to the output file.
-				// FIXME: implement CSV.
-			}
-		}
+//		boolean odd = false;
+//		
+//		// Opens the output file for writing.
+//		try (PrintWriter out = new PrintWriter(new File(OUTPUT_FILE_PATH))) {
+//			for (Alumnus alumnus : alumni) {
+//				// Writes a line to the output file.
+//				// FIXME: implement CSV.
+//			}
+//		}
 	}
 
 	private static void parseDetails() throws Exception {

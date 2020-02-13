@@ -34,13 +34,8 @@ import org.jsoup.select.Elements;
  * @version 1.0
  */
 public class ParseUfesStudentsTable {
-<<<<<<< HEAD
-	private static final String DATA_FILE_PATH = "parse-ufes-students-nemo.csv";
-	
-=======
 	private static final String DATA_FILE_PATH = "parse-ufes-students.csv";
 
->>>>>>> branch 'master' of git@github.com:vitorsouza/Programs.git
 	private static final String OUTPUT_FILE_PATH = "parse-ufes-students.html";
 
 	// http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-de-mestrado
@@ -129,11 +124,7 @@ public class ParseUfesStudentsTable {
 		String url = START_URL;
 		while (url != null) {
 			// Opens the page and extracts the HTML DOM structure into Jsoup.
-<<<<<<< HEAD
 			Document doc = Jsoup.connect(url).timeout(30*1000).get();
-=======
-			Document doc = Jsoup.connect(url).timeout(10000).get();
->>>>>>> branch 'master' of git@github.com:vitorsouza/Programs.git
 			url = null;
 
 			// Looks for the first table in the document, where the names of the students are supposed to be.
