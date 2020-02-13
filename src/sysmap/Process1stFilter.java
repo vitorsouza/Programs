@@ -20,11 +20,14 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class Process1stFilter {
+	
+	private static final String DATA_FOLDER = "/Users/paulossjunior/Google Drive/UFES/Doutorado/Disciplinas/MetodologiaPesquisa/";
+	
 	/** Source file with the raw result of the search. */
-	private static final String CSV_SOURCE_FILENAME = "sysmap-1stfilter.csv";
+	private static final String CSV_SOURCE_FILENAME = DATA_FOLDER+"sysmap-1stfilter.csv";
 
 	/** Resulting file with duplicates grouped by title. */
-	private static final String CSV_RESULT_FILENAME = "sysmap-1stfilter-result.csv";
+	private static final String CSV_RESULT_FILENAME = DATA_FOLDER+"sysmap-1stfilter-result.csv";
 
 	/** The program. */
 	public static void main(String[] args) throws Exception {
@@ -42,7 +45,7 @@ public class Process1stFilter {
 				String[] data = line.split(";");
 				
 				// Checks if the column separator has been used inside a cell.
-				if (data.length != 5) {
+				if (data.length < 5) {
 					System.out.println("\nFATAL: separator used inside a cell. Even if quoted, this script doesn't support this. Please \"fix\" the source file:");
 					System.out.printf("%d: %s%n%n", countAll, line);
 					System.exit(1);
