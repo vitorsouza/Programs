@@ -6,6 +6,13 @@ import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.cmc.music.common.ID3ReadException;
+import org.cmc.music.metadata.IMusicMetadata;
+import org.cmc.music.metadata.MusicMetadataSet;
+import org.cmc.music.myid3.MyID3;
+
 import mp3.domain.Album;
 import mp3.domain.Artist;
 import mp3.domain.Track;
@@ -13,12 +20,6 @@ import mp3.tasks.RenameAlbumFolderTask;
 import mp3.tasks.RenameArtistFolderTask;
 import mp3.tasks.RenameTrackFileTask;
 import mp3.tasks.Task;
-
-import org.apache.log4j.Logger;
-import org.cmc.music.common.ID3ReadException;
-import org.cmc.music.metadata.IMusicMetadata;
-import org.cmc.music.metadata.MusicMetadataSet;
-import org.cmc.music.myid3.MyID3;
 
 /**
  * Goes through all subdirectories of a root folder (constant ROOT) and checks if the names of Mp3 files and their
@@ -34,7 +35,7 @@ import org.cmc.music.myid3.MyID3;
  * @version 1.0
  */
 public class Mp3CheckTagsAndFolders {
-	private static final Logger log = Logger.getLogger(Mp3CheckTagsAndFolders.class);
+	private static final Logger log = LogManager.getLogger(Mp3CheckTagsAndFolders.class);
 
 	private static final String ROOT = "/media/Iomega/Music/ZZ_Temp/3_TagsWritten2/";
 

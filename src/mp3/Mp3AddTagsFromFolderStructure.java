@@ -3,7 +3,8 @@ package mp3;
 import java.io.File;
 import java.io.FileFilter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cmc.music.metadata.MusicMetadata;
 import org.cmc.music.metadata.MusicMetadataSet;
 import org.cmc.music.myid3.MyID3;
@@ -25,7 +26,7 @@ import org.cmc.music.myid3.MyID3;
  * @version 1.0
  */
 public class Mp3AddTagsFromFolderStructure {
-	private static final Logger log = Logger.getLogger(Mp3CheckTagsAndFolders.class);
+	private static final Logger log = LogManager.getLogger(Mp3CheckTagsAndFolders.class);
 
 	private static final String SRC_FOLDER = "/media/Iomega/Music/ZZ_Temp/2_TagWithJava/";
 

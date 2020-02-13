@@ -22,10 +22,10 @@ import org.jsoup.select.Elements;
  * @author Vítor E. Silva Souza (vitorsouza@gmail.com)
  * @version 1.0
  */
-public class ParseUfesAlumniTable {
-	private static final String DATA_FILE_PATH = "parse-ufes-alumni.csv";
+public class ParseUfesAlumniTableForWebsite {
+	private static final String DATA_FILE_PATH = "parse-ufes-alumni-website.csv";
 	
-	private static final String OUTPUT_FILE_PATH = "parse-ufes-alumni.html";
+	private static final String OUTPUT_FILE_PATH = "parse-ufes-alumni-website.html";
 	
 	private static final String START_URL = "http://www.informatica.ufes.br/pos-graduacao/PPGI/lista-de-discentes-egressos";
 
@@ -120,7 +120,7 @@ public class ParseUfesAlumniTable {
 		for (Alumnus alumnus : alumni) {
 			// Opens the detail page of the alumnus.
 			System.out.printf("Checking details for %s... ", alumnus);
-			Document doc = Jsoup.connect(alumnus.getUrl()).get();
+			Document doc = Jsoup.connect(alumnus.getUrl()).timeout(30*1000).get();
 			
 			// Obtains the tables in the document and looks for the products table.
 			Elements tables = doc.select(SELECTOR_TABLE);
@@ -163,7 +163,7 @@ public class ParseUfesAlumniTable {
 				}
 				else {
 					// Opens the detail page of the alumnus' defended work.
-					doc = Jsoup.connect(workUri).get();
+					doc = Jsoup.connect(workUri).timeout(30*1000).get();
 					
 					// Looks for the first table in the document, where the names of the supervisors are.
 					table = doc.select(SELECTOR_TABLE).first();
@@ -214,7 +214,7 @@ public class ParseUfesAlumniTable {
 		while (url != null) {
 			// Opens the page and extracts the HTML DOM structure into Jsoup.
 			System.out.printf("Parsing %s...%n", url);
-			Document doc = Jsoup.connect(url).get();
+			Document doc = Jsoup.connect(url).timeout(30*1000).get();
 			url = null;
 			
 			// Looks for the first table in the document, where the names of the students are supposed to be.
@@ -251,54 +251,3 @@ public class ParseUfesAlumniTable {
 	}
 }
 
-class Alumnus implements Comparable<Alumnus> {
-	private static final String ALUMNI_TABLE_LINE_TEMPLATE = 
-			"<tr%s>%n" + 
-				"\t<td><a href=\"%s\">%s</a></td>%n" + 
-				"\t<td>%s</td>%n" +
-				"\t<td><a href=\"%s\">%s</a></td>%n" +
-				"\t<td>%s</td>%n" +
-				"\t<td>%s</td>%n" +
-			"</tr>%n";
-
-	private String name;
-	private String defenseDate;
-	private String level;
-	private String url;
-	private String supervisor;
-	private String workTitle;
-	
-	Alumnus(String name, String defenseDate, String level, String url) {
-		this.name = name;
-		this.defenseDate = defenseDate;
-		this.level = level;
-		this.url = url;
-	}
-	
-	public String getUrl() {
-		return url;
-	}
-	
-	public void setSupervisor(String supervisor) {
-		this.supervisor = supervisor;
-	}
-	
-	public void setWorkTitle(String workTitle) {
-		this.workTitle = workTitle;
-	}
-	
-	public void printTableLine(PrintWriter out, boolean odd, Map<String, String> homepageMap) {
-		String supervisorHomepage = homepageMap.get(supervisor);
-		out.printf(ALUMNI_TABLE_LINE_TEMPLATE, (odd ? " class=\"odd\"" : ""), url, name, level, supervisorHomepage, supervisor, defenseDate, workTitle);
-	}
-
-	@Override
-	public int compareTo(Alumnus o) {
-		return name.compareTo(o.name);
-	}
-	
-	@Override
-	public String toString() {
-		return name + " (" + level + ")";
-	}
-}

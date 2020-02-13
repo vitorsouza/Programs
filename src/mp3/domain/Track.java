@@ -4,9 +4,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import mp3.Mp3Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import mp3.Mp3Utils;
 
 /**
  * Domain class used by Mp3CheckTagsAndFolders.
@@ -15,7 +16,7 @@ import org.apache.log4j.Logger;
  * @version 1.0
  */
 public class Track implements Comparable<Track> {
-	private static final Logger log = Logger.getLogger(Track.class);
+	private static final Logger log = LogManager.getLogger(Track.class);
 
 	private Album album;
 

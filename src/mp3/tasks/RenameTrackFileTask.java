@@ -2,9 +2,10 @@ package mp3.tasks;
 
 import java.io.File;
 
-import mp3.domain.Track;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import mp3.domain.Track;
 
 /**
  * One of the tasks used by Mp3CheckTagsAndFolders, which builds a task list, confirms all actions and only then
@@ -14,7 +15,7 @@ import org.apache.log4j.Logger;
  * @version 1.0
  */
 public class RenameTrackFileTask extends RenameTask {
-	private static final Logger log = Logger.getLogger(RenameTrackFileTask.class);
+	private static final Logger log = LogManager.getLogger(RenameTrackFileTask.class);
 
 	private Track track;
 

@@ -9,9 +9,10 @@ import java.text.NumberFormat;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import mp3.domain.Artist;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import mp3.domain.Artist;
 
 /**
  * Utility functions used by other classes in the package.
@@ -20,7 +21,7 @@ import org.apache.log4j.Logger;
  * @version 1.0
  */
 public class Mp3Utils {
-	private static final Logger log = Logger.getLogger(Mp3Utils.class);
+	private static final Logger log = LogManager.getLogger(Mp3Utils.class);
 
 	public static final NumberFormat trackNumberFormat = NumberFormat.getIntegerInstance();
 	static {

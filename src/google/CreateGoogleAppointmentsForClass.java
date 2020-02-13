@@ -82,9 +82,9 @@ import com.google.api.services.calendar.model.EventDateTime;
 public class CreateGoogleAppointmentsForClass {
 	private static final TimeZone MY_TIME_ZONE = TimeZone.getTimeZone("BRT");
 
-	private static final String PROPERTIES_FILE = "lp-2016-2.properties";
+	private static final String PROPERTIES_FILE = "lp-2017-2.properties";
 
-	private static final String CSV_FILE = "lp-2016-2.csv";
+	private static final String CSV_FILE = "lp-2017-2.csv";
 
 	private static final String CSV_DELIMITER = "\\s*;\\s*";
 
@@ -161,6 +161,9 @@ public class CreateGoogleAppointmentsForClass {
 
 				// Breaks the line using the CSV delimiter.
 				String[] columns = line.split(CSV_DELIMITER);
+				
+				// If there is BOM in the UTF-8 file, discard it (should be done only for the first line, but oh well...).
+				if (columns[0] != null && columns[0].length() > 0 && (int)columns[0].charAt(0) == 65279) columns[0] = columns[0].substring(1);
 
 				// Sets the calendar to the start time of the appointment.
 				calendar.setTime(df.parse(columns[0]));

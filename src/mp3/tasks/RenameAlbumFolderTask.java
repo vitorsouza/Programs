@@ -2,9 +2,10 @@ package mp3.tasks;
 
 import java.io.File;
 
-import mp3.domain.Album;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import mp3.domain.Album;
 
 /**
  * One of the tasks used by Mp3CheckTagsAndFolders, which builds a task list, confirms all actions and only then
@@ -14,7 +15,7 @@ import org.apache.log4j.Logger;
  * @version 1.0
  */
 public class RenameAlbumFolderTask extends RenameTask {
-	private static final Logger log = Logger.getLogger(RenameAlbumFolderTask.class);
+	private static final Logger log = LogManager.getLogger(RenameAlbumFolderTask.class);
 
 	private Album album;
 

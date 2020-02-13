@@ -39,6 +39,7 @@ public class PhotoDateFixer {
 	private static File rootFolder;
 
 	private static DateFormat dfIn = new SimpleDateFormat("yyyyMMdd_HHmmss");
+	//private static DateFormat dfIn = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
 	private static DateFormat dfOut = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 
 	private static final Map<String, File> photoMap = new HashMap<>();

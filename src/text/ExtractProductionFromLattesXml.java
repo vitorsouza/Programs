@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.text.Normalizer;
 import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
@@ -17,11 +16,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
-
-import bibtex.domain.GreyLiterature;
-import bibtex.domain.MastersDissertation;
-import bibtex.domain.PhdThesis;
-import bibtex.domain.UndergradMonograph;
 
 public class ExtractProductionFromLattesXml {
 	/** Path to the XML file that contains the Lattes CV to be parsed. */
